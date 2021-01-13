@@ -1,0 +1,11 @@
+--- package.json	2020-12-17 12:17:48.000000000 -0500
++++ package.json	2021-01-11 22:52:59.149395780 -0500
+@@ -265,7 +265,7 @@
+     "@storybook/react/@storybook/core/node-fetch": "2.6.1"
+   },
+   "engines": {
+-    "node": "12.13.0"
++    "node": ">=12.13.0"
+   },
+   "build": {
+     "appId": "org.whispersystems.signal-desktop",
