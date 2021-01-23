@@ -22,11 +22,14 @@ Patch2:         dynamically-link-libcrypto.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  git
+BuildRequires:  libxcrypt-compat
 BuildRequires:  make
 BuildRequires:  nodejs >= 12.13.0
+BuildRequires:  npm
 BuildRequires:  python
 BuildRequires:  python2
 BuildRequires:  yarnpkg
+BuildRequires:  zlib
 
 %description
 Signal Desktop is an Electron application that links with Signal on Android or iOS.
@@ -36,6 +39,11 @@ Signal Desktop is an Electron application that links with Signal on Android or i
 %setup -q -n %{capitalname}-%{version}
 %patch0
 %patch1
+# Copr build fails without this
+yarn add node-gyp
+# protobufjs CLI tries to install packages which fails on Copr
+# See https://github.com/protobufjs/protobuf.js/issues/1368
+yarn add --dev chalk@^1.1.3 uglify-js@^2.8.29 espree@^3.5.3
 yarn install --frozen-lockfile
 %patch2
 
