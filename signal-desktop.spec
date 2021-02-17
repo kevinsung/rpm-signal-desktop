@@ -3,7 +3,7 @@
 %define capitalname Signal-Desktop
 
 Name:           signal-desktop
-Version:        1.39.6
+Version:        1.40.0
 Release:        1%{?dist}
 Summary:        Private messaging from your desktop
 
@@ -11,17 +11,16 @@ License:        AGPLv3
 URL:            https://signal.org/
 Source0:        https://github.com/signalapp/%{capitalname}/archive/v%{version}.tar.gz
 Source1:        %{name}.desktop
-# Allow higher Node version
-Patch0:         allow-higher-node-version.patch
 # We can't read the release date from git so we use SOURCE_DATE_EPOCH instead
 # See https://github.com/signalapp/Signal-Desktop/issues/2376
-Patch1:         expire-from-source-date-epoch.patch
+Patch0:         expire-from-source-date-epoch.patch
 # Have SQLCipher dynamically link libcrypto
 # See https://github.com/signalapp/Signal-Desktop/issues/2634
-Patch2:         dynamically-link-libcrypto.patch
+Patch1:         dynamically-link-libcrypto.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  git
+BuildRequires:  git-lfs
 BuildRequires:  libxcrypt-compat
 BuildRequires:  make
 BuildRequires:  nodejs >= 12.13.0
@@ -38,14 +37,17 @@ Signal Desktop is an Electron application that links with Signal on Android or i
 %prep
 %setup -q -n %{capitalname}-%{version}
 %patch0
-%patch1
+# Allow higher Node versions
+sed -i 's/"node": "/&>=/' package.json
+# Initialize git-lfs
+git lfs install
 # Copr build fails without this
 yarn add node-gyp
 # protobufjs CLI tries to install packages which fails on Copr
 # See https://github.com/protobufjs/protobuf.js/issues/1368
 yarn add --dev chalk@^1.1.3 uglify-js@^2.8.29 espree@^3.5.3
 yarn install --frozen-lockfile
-%patch2
+%patch1
 
 
 %build

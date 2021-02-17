@@ -7,11 +7,10 @@ RUN dnf install -y curl dnf-plugins-core rpmdevtools
 RUN rpmdev-setuptree
 WORKDIR /root/rpmbuild
 COPY ./signal-desktop.spec SPECS/
-COPY ./allow-higher-node-version.patch SOURCES/
 COPY ./dynamically-link-libcrypto.patch SOURCES/
 COPY ./expire-from-source-date-epoch.patch SOURCES/
 COPY ./signal-desktop.desktop SOURCES/
-RUN curl -o SOURCES/v1.39.6.tar.gz -LJ https://github.com/signalapp/Signal-Desktop/archive/v1.39.6.tar.gz
+RUN curl -o SOURCES/v1.40.0.tar.gz -LJ https://github.com/signalapp/Signal-Desktop/archive/v1.40.0.tar.gz
 
 # Install build dependencies
 RUN dnf builddep -y SPECS/signal-desktop.spec
