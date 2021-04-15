@@ -3,7 +3,7 @@
 %define capitalname Signal-Desktop
 
 Name:           signal-desktop
-Version:        1.40.0
+Version:        5.0.0
 Release:        1%{?dist}
 Summary:        Private messaging from your desktop
 
